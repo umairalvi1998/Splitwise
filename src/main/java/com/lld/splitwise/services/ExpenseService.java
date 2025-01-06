@@ -51,48 +51,15 @@ public class ExpenseService {
             Integer paidAmount = payout.getPaidAmount();
             Integer owedAmount = payout.getOwedAmount();
 
-            if(paidAmount > 0  && owedAmount > 0) {
-                ExpenseUser expenseUser1 = new ExpenseUser();
-                expenseUser1.setUser(user1);
-                expenseUser1.setExpense(expense);
-                expenseUser1.setAmount(paidAmount);
-                expenseUser1.setExpenseUserType(ExpenseUserType.PAID_BY);
-                expenseUserRepo.save(expenseUser1);
+            expenseUser.setExpense(expense);
+            expenseUser.setUser(user1);
+            expenseUser.setPaidAmount(paidAmount);
+            expenseUser.setOwedAmount(owedAmount);
 
-                expenseUser.setExpense(expense);
-                expenseUser.setUser(user1);
-                expenseUser.setAmount(owedAmount);
-                expenseUser.setExpenseUserType(ExpenseUserType.HAD_TO_PAY);
-                expenseUserRepo.save(expenseUser);
+            expenseUserRepo.save(expenseUser);
 
-                expenseUsers.add(expenseUser1);
-                expenseUsers.add(expenseUser);
 
-            }
-            else if( paidAmount>0 ) {
-                expenseUser.setExpense(expense);
-                expenseUser.setUser(user1);
-                expenseUser.setAmount(paidAmount);
-                expenseUser.setExpenseUserType(ExpenseUserType.PAID_BY);
-                expenseUsers.add(expenseUser);
-                expenseUserRepo.save(expenseUser);
-            }
-            else if(owedAmount > 0) {
-                expenseUser.setExpense(expense);
-                expenseUser.setUser(user1);
-                expenseUser.setAmount(owedAmount);
-                expenseUser.setExpenseUserType(ExpenseUserType.HAD_TO_PAY);
-                expenseUsers.add(expenseUser);
-                expenseUserRepo.save(expenseUser);
-            }
-            else {
-                expenseUser.setExpense(expense);
-                expenseUser.setUser(user1);
-                expenseUser.setAmount(0);
-                expenseUser.setExpenseUserType(ExpenseUserType.HAD_TO_PAY);
-                expenseUsers.add(expenseUser);
-                expenseUserRepo.save(expenseUser);
-            }
+
         }
 
         expense.setExpenseUsers(expenseUsers);
@@ -100,3 +67,61 @@ public class ExpenseService {
         return expenseRepo.save(expense);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//if(paidAmount > 0  && owedAmount > 0) {
+//ExpenseUser expenseUser1 = new ExpenseUser();
+//                expenseUser1.setUser(user1);
+//                expenseUser1.setExpense(expense);
+//                expenseUser1.setAmount(paidAmount);
+//                expenseUser1.setExpenseUserType(ExpenseUserType.PAID_BY);
+//                expenseUserRepo.save(expenseUser1);
+//
+//                expenseUser.setExpense(expense);
+//                expenseUser.setUser(user1);
+//                expenseUser.setAmount(owedAmount);
+//                expenseUser.setExpenseUserType(ExpenseUserType.HAD_TO_PAY);
+//                expenseUserRepo.save(expenseUser);
+//
+//                expenseUsers.add(expenseUser1);
+//                expenseUsers.add(expenseUser);
+//
+//            }
+//                    else if( paidAmount>0 ) {
+//        expenseUser.setExpense(expense);
+//                expenseUser.setUser(user1);
+//                expenseUser.setAmount(paidAmount);
+//                expenseUser.setExpenseUserType(ExpenseUserType.PAID_BY);
+//                expenseUsers.add(expenseUser);
+//                expenseUserRepo.save(expenseUser);
+//            }
+//                    else if(owedAmount > 0) {
+//        expenseUser.setExpense(expense);
+//                expenseUser.setUser(user1);
+//                expenseUser.setAmount(owedAmount);
+//                expenseUser.setExpenseUserType(ExpenseUserType.HAD_TO_PAY);
+//                expenseUsers.add(expenseUser);
+//                expenseUserRepo.save(expenseUser);
+//            }
+//                    else {
+//                    expenseUser.setExpense(expense);
+//                expenseUser.setUser(user1);
+//                expenseUser.setAmount(0);
+//                expenseUser.setExpenseUserType(ExpenseUserType.HAD_TO_PAY);
+//                expenseUsers.add(expenseUser);
+//                expenseUserRepo.save(expenseUser);
+//            }

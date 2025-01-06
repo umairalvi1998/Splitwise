@@ -4,6 +4,7 @@ import com.lld.splitwise.DTO.settleUpGroupRequestDto;
 import com.lld.splitwise.DTO.settleUpGroupResponseDto;
 import com.lld.splitwise.DTO.settleUpUserRequestDto;
 import com.lld.splitwise.DTO.settleUpUserResponseDto;
+import com.lld.splitwise.Exceptions.GroupNotFoundException;
 import com.lld.splitwise.Exceptions.userNotFoundException;
 import com.lld.splitwise.models.Expense;
 import com.lld.splitwise.services.settleUpService;
@@ -24,9 +25,11 @@ public class settleUpController {
     }
 
     @GetMapping("/group")
-    public settleUpGroupResponseDto settleUpGroup(settleUpGroupRequestDto requestDto) {
-
-       return null;
+    public settleUpGroupResponseDto settleUpGroup(settleUpGroupRequestDto requestDto) throws GroupNotFoundException {
+        settleUpGroupResponseDto responseDto = new settleUpGroupResponseDto();
+        List<Expense> expenses = settleUpService.settleUpGroup(requestDto.getGroupId());
+        responseDto.setExpenses(expenses);
+       return responseDto;
     }
 
     @GetMapping("/user")

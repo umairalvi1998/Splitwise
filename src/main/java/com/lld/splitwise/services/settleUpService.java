@@ -1,9 +1,11 @@
 package com.lld.splitwise.services;
 
+import com.lld.splitwise.Exceptions.GroupNotFoundException;
 import com.lld.splitwise.Exceptions.userNotFoundException;
 import com.lld.splitwise.Strategy.SettleUpStrategy;
 import com.lld.splitwise.models.Expense;
 import com.lld.splitwise.models.ExpenseUser;
+import com.lld.splitwise.models.Group;
 import com.lld.splitwise.models.User;
 import com.lld.splitwise.repositories.ExpenseUserRepository;
 import org.springframework.stereotype.Service;
@@ -51,7 +53,9 @@ public class settleUpService {
 
     }
 
-    public List<Expense> settleUpGroup(Long groupId) {
+    public List<Expense> settleUpGroup(Long groupId) throws GroupNotFoundException {
+         Group group = groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException("Group not found"));
+
         return null;
     }
 }

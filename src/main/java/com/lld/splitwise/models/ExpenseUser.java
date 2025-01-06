@@ -18,9 +18,10 @@ public class ExpenseUser extends  BaseModel {
     @ManyToOne
     private User user;
 
-    private int amount;
+//    @Enumerated(EnumType.ORDINAL)
+//    private  ExpenseUserType expenseUserType;
 
-    @Enumerated(EnumType.ORDINAL)
-    private  ExpenseUserType expenseUserType;
+    private  int paidAmount;
+    private  int owedAmount;
 
 }
