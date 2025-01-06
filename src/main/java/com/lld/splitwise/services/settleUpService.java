@@ -40,10 +40,9 @@ public class settleUpService {
 
         //fetch all the expenses where this user was part of.
         List<ExpenseUser> expenses = expenseUserRepository.findByUser(user);
-        Set<Expense> expensesToSettle = new HashSet<>(); // this is because we don't want to settle the same expense twice. a user can be "paidBy" and "hadToPay" in a single exoense
+        Set<Expense> expensesToSettle = new HashSet<>(); // this is because we don't want to settle the same expense twice. a user can be "paidBy" and "hadToPay" in a single expense
         for(ExpenseUser expenseUser : expenses) {
                 expensesToSettle.add(expenseUser.getExpense());
-
         }
 
         List<Expense>  transactions = settleUpStrategy.settleUp(expensesToSettle.stream().toList());

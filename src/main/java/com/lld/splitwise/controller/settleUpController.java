@@ -7,6 +7,7 @@ import com.lld.splitwise.DTO.settleUpUserResponseDto;
 import com.lld.splitwise.Exceptions.userNotFoundException;
 import com.lld.splitwise.models.Expense;
 import com.lld.splitwise.services.settleUpService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,11 +23,13 @@ public class settleUpController {
         this.settleUpService = settleUpService;
     }
 
+    @GetMapping("/group")
     public settleUpGroupResponseDto settleUpGroup(settleUpGroupRequestDto requestDto) {
 
        return null;
     }
 
+    @GetMapping("/user")
     public settleUpUserResponseDto settleUpUser(settleUpUserRequestDto requestDto) throws userNotFoundException {
 
         settleUpUserResponseDto responseDto = new settleUpUserResponseDto();
