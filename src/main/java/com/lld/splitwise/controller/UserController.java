@@ -7,6 +7,8 @@ import com.lld.splitwise.models.User;
 import com.lld.splitwise.repositories.userRepository;
 import com.lld.splitwise.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +21,8 @@ public class UserController {
          this.userService = userService;
      }
 
-    public RegisterUserResponseDto  registerUser(RegisterUserRequestDto requestDto) {
+     @PostMapping("/register")
+    public RegisterUserResponseDto  registerUser(@RequestBody  RegisterUserRequestDto requestDto) {
 
          RegisterUserResponseDto responseDto = new RegisterUserResponseDto();
        User user =  userService.RegisterUser(requestDto);

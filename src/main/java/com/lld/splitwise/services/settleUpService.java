@@ -3,10 +3,7 @@ package com.lld.splitwise.services;
 import com.lld.splitwise.Exceptions.GroupNotFoundException;
 import com.lld.splitwise.Exceptions.userNotFoundException;
 import com.lld.splitwise.Strategy.SettleUpStrategy;
-import com.lld.splitwise.models.Expense;
-import com.lld.splitwise.models.ExpenseUser;
-import com.lld.splitwise.models.Group;
-import com.lld.splitwise.models.User;
+import com.lld.splitwise.models.*;
 import com.lld.splitwise.repositories.ExpenseUserRepository;
 import org.springframework.stereotype.Service;
 import com.lld.splitwise.repositories.groupRepository;
@@ -32,7 +29,7 @@ public class settleUpService {
         this.settleUpStrategy = settleUpStrategy;
     }
 
-    public List<Expense> settleUpUser(Long userId) throws userNotFoundException {
+    public List<Transaction> settleUpUser(Long userId) throws userNotFoundException {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isEmpty()) {
             throw new userNotFoundException("User not found");
@@ -47,15 +44,18 @@ public class settleUpService {
                 expensesToSettle.add(expenseUser.getExpense());
         }
 
-        List<Expense>  transactions = settleUpStrategy.settleUp(expensesToSettle.stream().toList());
+        List<Transaction>  transactions = settleUpStrategy.settleUp(expensesToSettle.stream().toList());
 
-        return transactions.stream().filter(expense -> expense.getExpenseUsers().stream().anyMatch(expenseUser -> expenseUser.getUser().equals(user))).toList();
+        return  transactions;
+                //transactions.stream().filter(expense -> expense.getExpenseUsers().stream().anyMatch(expenseUser -> expenseUser.getUser().equals(user))).toList();
 
     }
 
-    public List<Expense> settleUpGroup(Long groupId) throws GroupNotFoundException {
+    public List<Transaction> settleUpGroup(Long groupId) throws GroupNotFoundException {
          Group group = groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException("Group not found"));
          List<Expense> expenses = group.getExpenses();
-        return settleUpStrategy.settleUp(expenses);
+         List<Transaction>  transactions = settleUpStrategy.settleUp(expenses);
+         System.out.println("transactions = " + transactions);
+         return transactions;
     }
 }

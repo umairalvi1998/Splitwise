@@ -2,11 +2,14 @@ package com.lld.splitwise.services;
 
 import com.lld.splitwise.DTO.ExpenseCreationRequestDto;
 import com.lld.splitwise.DTO.PayoutDTO;
+import com.lld.splitwise.Exceptions.GroupNotFoundException;
 import com.lld.splitwise.Exceptions.userNotFoundException;
 import com.lld.splitwise.models.*;
 import com.lld.splitwise.repositories.ExpenseRepository;
 import com.lld.splitwise.repositories.ExpenseUserRepository;
+import com.lld.splitwise.repositories.groupRepository;
 import com.lld.splitwise.repositories.userRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,15 +22,17 @@ public class ExpenseService {
     private userRepository userRepo;
     private ExpenseRepository expenseRepo;
     private ExpenseUserRepository expenseUserRepo;
+    private groupRepository groupRepo;
 
-    ExpenseService(userRepository userRepo, ExpenseRepository expenseRepo, ExpenseUserRepository expenseUserRepo) {
+    ExpenseService(userRepository userRepo, ExpenseRepository expenseRepo, ExpenseUserRepository expenseUserRepo,groupRepository groupRepo) {
         this.userRepo = userRepo;
         this.expenseRepo = expenseRepo;
         this.expenseUserRepo = expenseUserRepo;
+        this.groupRepo = groupRepo;
 
     }
-
-    public Expense createExpense(ExpenseCreationRequestDto expenseCreationRequestDto) throws userNotFoundException {
+    @Transactional
+    public Expense createExpense(ExpenseCreationRequestDto expenseCreationRequestDto) throws userNotFoundException, GroupNotFoundException {
         Expense expense = new Expense();
         int amount = expenseCreationRequestDto.getAmount();
         expense.setAmount(amount);
@@ -35,13 +40,15 @@ public class ExpenseService {
         expense.setDescription(description);
         Long userId = expenseCreationRequestDto.getUserId();
         Optional<User> userOptional = userRepo.findById(userId);
+        Group group = groupRepo.findById(expenseCreationRequestDto.getGroupId()).orElseThrow(()->new GroupNotFoundException("Group Not found with the given Id"));
         if(userOptional.isEmpty()) {
             throw new userNotFoundException("User Not found with the given Id");
         }
         User user = userOptional.get();
         expense.setCreatedBy(user);
-
+        expense.setGroup(group);
         expense.setExpenseType(ExpenseType.REAL);
+        expenseRepo.save(expense);
         List<ExpenseUser> expenseUsers = new ArrayList<ExpenseUser>();
         for(PayoutDTO payout : expenseCreationRequestDto.getPayoutDTOS()) {
 

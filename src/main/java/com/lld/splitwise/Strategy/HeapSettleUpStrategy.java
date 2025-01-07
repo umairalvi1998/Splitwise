@@ -1,8 +1,6 @@
 package com.lld.splitwise.Strategy;
 
-import com.lld.splitwise.models.Expense;
-import com.lld.splitwise.models.ExpenseUser;
-import com.lld.splitwise.models.User;
+import com.lld.splitwise.models.*;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -10,12 +8,14 @@ import java.util.*;
 @Component
 public class HeapSettleUpStrategy implements SettleUpStrategy {
     @Override
-    public List<Expense> settleUp(List<Expense> expenses) {
+    public List<Transaction> settleUp(List<Expense> expenses) {
         //we need to find the total balance for each person involved in the expense
         /*
         for each person find all the expenses and then calculate paid-owed
          */
         //default order is ascending
+        Group group = expenses.get(0).getGroup();
+        List<Transaction> transactions = new ArrayList<>();
         Comparator<UserAmount> minUserAmountComparator = Comparator.comparingInt(UserAmount::getAmount);
         Comparator<UserAmount> maxUserAmountComparator = Comparator.comparingInt(UserAmount::getAmount).reversed();
 
@@ -36,6 +36,28 @@ public class HeapSettleUpStrategy implements SettleUpStrategy {
         }
 
         while(!(maxHeap.isEmpty() || minHeap.isEmpty())) {
+            UserAmount maxLendor = maxHeap.poll();
+            UserAmount maxBorrower = minHeap.poll();
+
+            if(maxLendor.getAmount() > Math.abs(maxBorrower.getAmount())) { //Borrower will settle up
+                Transaction transaction =
+                        new Transaction(Math.abs(maxBorrower.getAmount()), Arrays.asList(maxBorrower.getUser(), maxLendor.getUser()), group);
+                transactions.add(transaction);
+                maxLendor.setAmount(maxLendor.getAmount() - Math.abs(maxBorrower.getAmount()));
+                maxHeap.add(maxLendor);
+            }
+            else if(maxLendor.getAmount() < Math.abs(maxBorrower.getAmount())) { //Lendor will settle up
+                Transaction transaction =
+                        new Transaction(maxLendor.getAmount(), Arrays.asList(maxBorrower.getUser(), maxLendor.getUser()), group);
+                transactions.add(transaction);
+                maxBorrower.setAmount(Math.abs(maxLendor.getAmount() - Math.abs(maxBorrower.getAmount())));
+                minHeap.add(maxBorrower);
+            }
+            else {
+                Transaction transaction =
+                        new Transaction(maxLendor.amount, Arrays.asList(maxBorrower.getUser(), maxLendor.getUser()), group);
+                transactions.add(transaction);
+            }
 
         }
 

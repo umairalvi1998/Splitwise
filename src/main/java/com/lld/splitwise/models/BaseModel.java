@@ -24,4 +24,11 @@ public class BaseModel {
     @Temporal(value = TemporalType.TIMESTAMP)
     private  Date updatedAt;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -1,7 +1,10 @@
 package com.lld.splitwise.controller;
 
 import com.lld.splitwise.DTO.ExpenseCreationRequestDto;
+import com.lld.splitwise.DTO.ExpenseCreationResponseDTO;
+import com.lld.splitwise.Exceptions.GroupNotFoundException;
 import com.lld.splitwise.Exceptions.userNotFoundException;
+import com.lld.splitwise.models.Expense;
 import com.lld.splitwise.services.ExpenseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +21,10 @@ public class ExpenseController {
     }
 
     @PostMapping("/expense")
-    public ResponseEntity addExpense(@RequestBody ExpenseCreationRequestDto expenseCreationRequestDto) throws userNotFoundException {
-        return ResponseEntity.ok(expenseService.createExpense(expenseCreationRequestDto));
+    public ResponseEntity<Object> addExpense(@RequestBody ExpenseCreationRequestDto expenseCreationRequestDto) throws userNotFoundException, GroupNotFoundException {
+        ExpenseCreationResponseDTO responseDTO = new ExpenseCreationResponseDTO();
+        Expense expense = expenseService.createExpense(expenseCreationRequestDto);
+        responseDTO.setExpense(expense);
+        return ResponseEntity.ok(responseDTO);
     }
 }
