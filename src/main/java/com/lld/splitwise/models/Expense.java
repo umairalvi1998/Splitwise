@@ -16,15 +16,17 @@ public class Expense extends BaseModel {
     private int amount;
 
     @ManyToOne
+    @JoinColumn(name = "created_by_id")
     private User createdBy;
 
     @ManyToOne
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @Enumerated(EnumType.ORDINAL)
     private ExpenseType expenseType;
 
-    @OneToMany
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
     private List<ExpenseUser> expenseUsers;
 
 }

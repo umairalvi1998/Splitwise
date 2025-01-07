@@ -13,12 +13,17 @@ public class Group  extends  BaseModel {
 
     private String description;
     @ManyToMany
+    @JoinTable(
+            name = "group_members",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> members;
 
-    @OneToMany
-    @JoinColumn(name = "group_id")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<Expense> expenses;
 
     @ManyToOne
+    @JoinColumn(name = "created_by_id", nullable = false)
     private User createdBy;
 }

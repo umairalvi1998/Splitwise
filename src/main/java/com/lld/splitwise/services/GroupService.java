@@ -2,6 +2,7 @@ package com.lld.splitwise.services;
 
 import com.lld.splitwise.DTO.GroupCreationRequestDto;
 import com.lld.splitwise.Exceptions.userNotFoundException;
+import com.lld.splitwise.Strategy.SettleUpStrategy;
 import com.lld.splitwise.models.Group;
 import com.lld.splitwise.models.User;
 import com.lld.splitwise.repositories.groupRepository;
@@ -17,9 +18,10 @@ public class GroupService {
     private groupRepository groupRepo;
     private userRepository  userRepo;
 
-    public  GroupService(groupRepository groupRepo, userRepository userRepo) {
+    public  GroupService(groupRepository groupRepo, userRepository userRepo,SettleUpStrategy settleUpStrategy) {
         this.groupRepo = groupRepo;
         this.userRepo = userRepo;
+
     }
 
     public Group createGroup(GroupCreationRequestDto requestDto) throws userNotFoundException {

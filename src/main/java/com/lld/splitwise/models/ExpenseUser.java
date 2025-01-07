@@ -1,9 +1,6 @@
 package com.lld.splitwise.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,9 +10,11 @@ import lombok.Setter;
 @Entity
 public class ExpenseUser extends  BaseModel {
     @ManyToOne
+    @JoinColumn(name = "expense_id")
     private Expense expense;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
 //    @Enumerated(EnumType.ORDINAL)

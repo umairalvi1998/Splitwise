@@ -55,7 +55,7 @@ public class settleUpService {
 
     public List<Expense> settleUpGroup(Long groupId) throws GroupNotFoundException {
          Group group = groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException("Group not found"));
-
-        return null;
+         List<Expense> expenses = group.getExpenses();
+        return settleUpStrategy.settleUp(expenses);
     }
 }
