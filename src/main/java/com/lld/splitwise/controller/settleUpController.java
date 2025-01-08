@@ -9,7 +9,9 @@ import com.lld.splitwise.Exceptions.userNotFoundException;
 import com.lld.splitwise.models.Expense;
 import com.lld.splitwise.models.Transaction;
 import com.lld.splitwise.services.settleUpService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,11 +28,11 @@ public class settleUpController {
     }
 
     @GetMapping("/group")
-    public settleUpGroupResponseDto settleUpGroup(settleUpGroupRequestDto requestDto) throws GroupNotFoundException {
+    public ResponseEntity<settleUpGroupResponseDto> settleUpGroup(@RequestBody  settleUpGroupRequestDto requestDto) throws GroupNotFoundException {
         settleUpGroupResponseDto responseDto = new settleUpGroupResponseDto();
-        List<Transaction> expenses = settleUpService.settleUpGroup(requestDto.getGroupId());
-        responseDto.setExpenses(expenses);
-       return responseDto;
+        String transactionDetails = settleUpService.settleUpGroup(requestDto.getGroupId());
+        responseDto.setTransactionDetails(transactionDetails);
+       return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/user")

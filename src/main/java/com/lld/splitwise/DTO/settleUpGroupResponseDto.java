@@ -10,13 +10,13 @@ import java.util.List;
 @Getter
 @Setter
 public class settleUpGroupResponseDto {
-    List<Transaction> expenses;
+    private String transactionDetails;
 
-    public List<Transaction> getExpenses() {
-        return expenses;
+    public String getTransactionDetails() {
+        return transactionDetails;
     }
 
-    public void setExpenses(List<Transaction> expenses) {
-        this.expenses = expenses;
+    public void setTransactionDetails(String transactionDetails) {
+        this.transactionDetails = transactionDetails;
     }
 }

@@ -48,13 +48,13 @@ public class ExpenseService {
         expense.setCreatedBy(user);
         expense.setGroup(group);
         expense.setExpenseType(ExpenseType.REAL);
-        expenseRepo.save(expense);
+        //expenseRepo.save(expense);
         List<ExpenseUser> expenseUsers = new ArrayList<ExpenseUser>();
         for(PayoutDTO payout : expenseCreationRequestDto.getPayoutDTOS()) {
 
             ExpenseUser expenseUser = new ExpenseUser();
-            Integer userid = payout.getUserId();
-            User user1 = userRepo.findById(userId).orElseThrow(()->new userNotFoundException("User Not found with the given Id"));
+            Long userid = payout.getUserId();
+            User user1 = userRepo.findById(userid).orElseThrow(()->new userNotFoundException("User Not found with the given Id"));
             Integer paidAmount = payout.getPaidAmount();
             Integer owedAmount = payout.getOwedAmount();
 
@@ -63,7 +63,8 @@ public class ExpenseService {
             expenseUser.setPaidAmount(paidAmount);
             expenseUser.setOwedAmount(owedAmount);
 
-            expenseUserRepo.save(expenseUser);
+            //expenseUserRepo.save(expenseUser);
+            expenseUsers.add(expenseUser);
 
 
 

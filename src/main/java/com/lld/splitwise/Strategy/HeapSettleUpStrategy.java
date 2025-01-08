@@ -15,7 +15,7 @@ public class HeapSettleUpStrategy implements SettleUpStrategy {
          */
         //default order is ascending
         Group group = expenses.get(0).getGroup();
-        List<Transaction> transactions = new ArrayList<>();
+        ArrayList<Transaction> transactions = new ArrayList<>();
         Comparator<UserAmount> minUserAmountComparator = Comparator.comparingInt(UserAmount::getAmount);
         Comparator<UserAmount> maxUserAmountComparator = Comparator.comparingInt(UserAmount::getAmount).reversed();
 
@@ -63,7 +63,7 @@ public class HeapSettleUpStrategy implements SettleUpStrategy {
 
 
 
-        return null;
+        return transactions;
     }
 
     private  static HashMap<User,Integer> getTotalOutstandingBalance(List<Expense> expenses) {
@@ -91,6 +91,7 @@ public class HeapSettleUpStrategy implements SettleUpStrategy {
 
         public UserAmount(User user, Integer amount) {
             this.user = user;
+            this.amount = amount;
 
         }
 

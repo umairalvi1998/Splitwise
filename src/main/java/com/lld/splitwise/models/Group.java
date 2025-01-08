@@ -1,5 +1,6 @@
 package com.lld.splitwise.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Group  extends  BaseModel {
     private List<User> members;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Expense> expenses;
 
     @ManyToOne

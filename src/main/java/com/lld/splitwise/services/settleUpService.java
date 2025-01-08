@@ -51,11 +51,10 @@ public class settleUpService {
 
     }
 
-    public List<Transaction> settleUpGroup(Long groupId) throws GroupNotFoundException {
+    public String settleUpGroup(Long groupId) throws GroupNotFoundException {
          Group group = groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException("Group not found"));
          List<Expense> expenses = group.getExpenses();
          List<Transaction>  transactions = settleUpStrategy.settleUp(expenses);
-         System.out.println("transactions = " + transactions);
-         return transactions;
+         return transactions.toString();
     }
 }

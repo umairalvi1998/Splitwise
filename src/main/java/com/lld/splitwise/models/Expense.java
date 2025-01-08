@@ -22,6 +22,7 @@ public class Expense extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
+    @JsonManagedReference
     private Group group;
 
     @Enumerated(EnumType.ORDINAL)
