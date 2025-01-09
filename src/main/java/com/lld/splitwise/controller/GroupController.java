@@ -1,6 +1,9 @@
 package com.lld.splitwise.controller;
 
+import com.lld.splitwise.DTO.AddMemberRequestDto;
 import com.lld.splitwise.DTO.GroupCreationRequestDto;
+import com.lld.splitwise.Exceptions.GroupNotFoundException;
+import com.lld.splitwise.Exceptions.UnauthorizedAccessException;
 import com.lld.splitwise.Exceptions.userNotFoundException;
 import com.lld.splitwise.models.Group;
 import com.lld.splitwise.services.GroupService;
@@ -23,5 +26,15 @@ public class GroupController {
     public ResponseEntity createGroup(@RequestBody GroupCreationRequestDto requestDto) throws userNotFoundException {
         Group savedGroup = groupService.createGroup(requestDto);
         return ResponseEntity.ok(savedGroup);
+    }
+
+    @PostMapping("/groups/addMember")
+    public ResponseEntity<Group> addMember(@RequestBody  AddMemberRequestDto requestDto) throws userNotFoundException, GroupNotFoundException, UnauthorizedAccessException {
+        Long adminId = requestDto.getAdminId();
+        Long groupId = requestDto.getGroupId();
+        Long userId = requestDto.getUserId();
+
+        return ResponseEntity.ok(groupService.addMember(adminId, groupId, userId));
+
     }
 }

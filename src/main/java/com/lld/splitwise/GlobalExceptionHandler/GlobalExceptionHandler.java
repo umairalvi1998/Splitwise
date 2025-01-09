@@ -1,6 +1,7 @@
 package com.lld.splitwise.GlobalExceptionHandler;
 
 import com.lld.splitwise.Exceptions.GroupNotFoundException;
+import com.lld.splitwise.Exceptions.UnauthorizedAccessException;
 import com.lld.splitwise.Exceptions.userNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,4 +21,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<Object> handleUnauthorizedAccessException(UnauthorizedAccessException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
 }

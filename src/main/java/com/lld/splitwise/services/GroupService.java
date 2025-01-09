@@ -1,6 +1,8 @@
 package com.lld.splitwise.services;
 
 import com.lld.splitwise.DTO.GroupCreationRequestDto;
+import com.lld.splitwise.Exceptions.GroupNotFoundException;
+import com.lld.splitwise.Exceptions.UnauthorizedAccessException;
 import com.lld.splitwise.Exceptions.userNotFoundException;
 import com.lld.splitwise.Strategy.SettleUpStrategy;
 import com.lld.splitwise.models.Group;
@@ -46,6 +48,19 @@ public class GroupService {
         group.setCreatedBy(user);
 
 
+        return groupRepo.save(group);
+    }
+
+    public Group addMember(Long adminId, Long groupId, Long userId) throws userNotFoundException, GroupNotFoundException, UnauthorizedAccessException {
+        Group group = groupRepo.findById(groupId).orElseThrow(() -> new GroupNotFoundException("Group not found"));
+        User groupAdmin = group.getCreatedBy();
+        User user = userRepo.findById(userId).orElseThrow(() -> new userNotFoundException("User not found"));
+        User Admin = userRepo.findById(adminId).orElseThrow(() -> new userNotFoundException("Admin not found"));
+        if(groupAdmin != Admin){
+            throw new UnauthorizedAccessException("Only the admin can add members to the group");
+        }
+
+        group.getMembers().add(user);
         return groupRepo.save(group);
     }
 }
